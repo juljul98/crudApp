@@ -1,0 +1,110 @@
+body { font-family: 'roboto'; }
+.clearFix:before, .clearFix:after {display: table;content: "";}
+.clearFix:after { clear: both; }
+h1 { float: left; margin: 0; padding: 0;}
+.navArea { background-color: #48a2df; padding: 5px 0; }
+.container {  margin: 0 auto; }
+.heading a img { width: 50px; height: 50px; background-color: #fff; border-radius: 100%; }
+.navBar li a { text-decoration: none; color: #fff; }
+.navBar li { display: inline-block; list-style-type: none; padding: 0 15px; }
+.navBar li:last-child { border: none; }
+.navBar { padding-top: 14px; float: right; display: block;}
+.navMobileClick { display: none; float: right; }
+.navMobileClick a { font-size: 40px; }
+main { background-color: #fff!important; height: 1000px;}
+.clr:before,.clr:after {
+  display: table;
+  content: '';
+}
+.clr:after {
+  clear:both;
+}
+.modal-body { padding: 32px!important;}
+.active { padding-bottom: 5px; border-bottom: 2px solid #fff; }
+tr td:nth-child(8) { width: 206px; }
+tr td a:nth-child(3) { float: right; }
+.mvpArea { padding-top: 20px; }
+.mvpHead span{ text-transform: uppercase; font-size: 15px; font-weight: bold; color: #615e5e; position: relative; top: -3px; padding: 0 20px 5px 0; border-bottom: 2px solid #f39c12; width: 70%; }
+.mvpHead i { width: 50px; height: 50px; background-color: #999; color: #fff; font-size: 30px; text-align: center; line-height: 1.5;
+  -webkit-transition: ease-out .2s;
+  -moz-transition: ease-out .2s;
+  -o-transition: ease-out .2s;
+  transition: ease-out .2s;
+  cursor: pointer;
+  margin-right: 3%;
+  border-bottom: 3px solid #f39c12;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.dataTables_length { display: none; }
+.mvpHead i:hover { background-color: #e74c3c; border-bottom: 3px solid #e74c3c; }
+.mvpTxt, .motTxt, .wtcTxt { color: #000; padding-bottom: 15px;  }
+.mvpTxt { border-bottom: 3px solid #f6cd8b; }
+.cent { text-align: center;}
+.areaHead { font-size: 18px; text-align: center; margin-bottom: 15px; }
+.areaHead span { color: #e74c3c; text-transform: uppercase; font-size: 22px; }
+.teamBlk { border: 1px solid #f6cd8b; border-radius: 5px; text-align: center; margin-bottom: 15px; }
+.teamImg { overflow: hidden; margin: auto; padding: 10px; }
+.teamImg img { border-radius: 100%; margin: auto; border: 2px solid #f7c2bd; }
+.teamName, .teamPos { color: #aaa; }
+.teamName { font-size: 16px;}
+ul.teamSoc { margin: 0; display: inline-block; margin: 0 auto; }
+.socIcons { background-color: #ccc; width: 100%; padding: 5px; border: 1px solid #ccc; height: 63px; opacity: 0;
+  -webkit-transition: ease-out .1s;
+  -moz-transition: ease-out .1s;
+  -o-transition: ease-out .1s;
+  transition: ease-out .1s;
+}
+.teamSoc li { float: left; }
+.teamBlk:hover { cursor:pointer; }
+.teamBlk:hover .socIcons { opacity: 1; cursor: pointer; }
+.socIcons li a:hover {
+  cursor: pointer;
+  animation: bounceOut .4s linear;
+}
+.teamSoc li a { display: block; border: 1px solid #f39c12; border-radius: 100%; background-color: #fff; margin: 0 5px; text-align: center; text-decoration: none; color: #f39c12; }
+.teamSoc li a i { padding: 10px; display: block; width: 50px; height: 50px; font-size: 18px; line-height: 1.7; }
+
+@keyframes bounceOut {
+  0% {
+    box-shadow: 0 0 0 2px #e74c3c;
+    opacity: 1;
+  }
+  25% {
+    box-shadow: 0 0 0 1px #e74c3c;
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 0 3px #e74c3c;
+    opacity: 1;
+  }
+  75% {
+    box-shadow: 0 0 0 2px #e74c3c;
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 2px #e74c3c;
+    opacity: 1;
+  }
+}
+@media screen and (max-width: 800px){
+  .socIcons { opacity: 1; }
+}
+@media screen and (max-width: 990px){
+  .teamSoc li a i { width: 31px; height: 31px; line-height: .7; font-size: 15px;}
+  .socIcons { height: 45px; }
+}
+@media screen and (max-width: 768px){
+  .teamSoc li a i {width: 50px; height: 50px; font-size: 18px; line-height: 1.7; }
+  .socIcons { height: 63px; }
+}
+
+@media screen and (max-width: 780px) {
+  .navArea { height: 50px; }
+  .navBar { display: none; position: relative; top: 2px; left: 0; width:100%;  bottom:0; background: #000; padding: 0; }
+  .navMobileClick { display: block; }
+  .heading a img { margin-left: 5px; }
+  .navMobileClick i { margin-right: 20px; color: #fff; }
+  .navBar li { float: none; display: block; border: none; }
+  .container { padding: 0;}
+}

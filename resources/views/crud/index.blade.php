@@ -10,12 +10,20 @@
     {{ Session::get('flash_messages') }}
   </div>
   @endif
-  {!! Form::open([ 'route' => 'crud.index' ,'method' => 'GET' ])!!}
-
-  {!! Form::text('student_fname', '', array ( 'class' => 'form-control'  ) ); !!}
-  {!! Form::submit('Submit', array( 'class' => 'btn btn-success srchBtn' )); !!}
-
-  {!! Form::close() !!}
+  @if(Session::has('success'))
+  <div class="alert alert-danger" style="margin-top: 20px;">
+    {{ Session::get('success') }}
+  </div>
+  
+  @endif
+  @if(Session::has('error'))
+  <div class="alert alert-danger" style="margin-top: 20px;">
+    {{ Session::get('error') }}
+  </div>
+  @endif
+  
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  {!! Form::text('student_fname', '', array ( 'class' => 'form-control searchinput'  ) ); !!}
 
   <div class="table" style="margin-top: 20px;">
     <table class="table table-bordered">
@@ -59,8 +67,30 @@
       <div class="alert">found result {{ $count }}</div>
       </tbody>
     </table>
+
+
+<div class="col-md-6">
+   <h1>Generate Excel</h1>
+    {!! Form::open(['url' => 'excel', 'method' => 'post']) !!}
+    
+      {!! Form::text('excel_report', '', array('class' => 'form-control') ) !!}
+   
+    {!!  Form::submit('Generate EXCEL REPORT', array( 'class' => 'btn btn-primary' ));  !!}
+    {!! Form::close() !!}
+</div>
+<div class="col-md-6">
+   <h1>Import Excel</h1><br>
+    {!! Form::open(['url' => 'getexcel', 'method' => 'post']) !!}
+   
+      {!! Form::file('import_excel', '', array('class' => 'form-control') ) !!}
+   
+    {!!  Form::submit('Upload EXCEL REPORT', array( 'class' => 'btn btn-success' ));  !!}
+    {!! Form::close() !!}
+</div>
+    
+    
     
   </div>
 </div>
-
+<script></script>
 @endsection

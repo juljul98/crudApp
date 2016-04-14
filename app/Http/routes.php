@@ -23,5 +23,9 @@
 */
 
 Route::group(['middleware' => ['web']], function () {
+  Route::any('excel', 'studentController@generateexcel');
+  Route::any('getexcel', 'studentController@importexcel');
+
+  Route::get('/crud/searchdata', 'studentController@searchdata');
   Route::resource('crud', 'studentController');
 });

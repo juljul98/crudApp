@@ -14,6 +14,8 @@ use Session;
 use App\Paginate;
 use Redirect;
 use DB;
+use Excel;
+
 
 
 
@@ -28,15 +30,28 @@ class studentController extends Controller
   public function index(Request $request)
     {
       // create var crud to
+
+
+    $crud = student::orderBy('student_fname', 'ASC');
+    $crud=$crud->get();
+    return View::make('crud.index', compact('crud'));
+
+
+    }
+  public function searchdata() {
     
     $crud = student::orderBy('student_fname', 'ASC');
-      $student_fname = $request->input('student_fname');
-      if (!empty($student_fname)) {
-        $crud->where('student_fname', 'LIKE', '%'.$student_fname.'%' );
-      }
-    $crud=$crud->paginate(999);
-      return View::make('crud.index', compact('crud'));
+    $student_fname = Input::get('searchinput');
+    if (!empty($student_fname)) {
+      $crud->where('student_fname', 'LIKE', '%'.$student_fname.'%' );
+      $crud=$crud->get();
+      $data = array(
+        'result' => $crud,
+        'success' => 1
+      );
+      echo json_encode($data);
     }
+  }
     /**
      * Show the form for creating a new resource.
      *
@@ -46,16 +61,66 @@ class studentController extends Controller
     {
       // return view crud/create
 
-      return View::make('crud.create');
+      return view('crud.create');
     }
+  
+  
+  
+  
+    public function generateexcel()
+    {
+      $users = student::select('student_id', 'student_fname', 'student_mname', 'student_lname')->get();
+      $file_name = Input::get('excel_report');
+      Excel::create($file_name, function($excel) use($users) {
+        
+        $excel->sheet('Sheet 1', function($sheet) use($users) {
+          $sheet->fromArray($users);
+        
+        });
+      })->download('xls');
+    }
+  
+  
+  
+  public function importexcel() {
+    $rules = array(
+      'file' => 'required'
+    );
 
+    $validator = Validator::make(Input::all(), $rules);
+    // process the form
+    if ($validator->fails()) 
+    {
+      return Redirect::to('crud')->withErrors($validator);
+      Session::flash('error', 'There\'s an error');
+      return redirect(route('crud.index'));
+    }
+    else
+    {
+      try {
+        Excel::load(Input::file('import_excel'), function ($reader) {
+
+          foreach ($reader->toArray() as $row) {
+            student::firstOrCreate($row);
+          }
+        });
+        Session::flash('success', 'Users uploaded successfully.');
+        return redirect(route('crud.index'));
+      } catch (\Exception $e) {
+        Session::flash('error', $e->getMessage());
+        return redirect(route('crud.index'));
+      }
+    }
+  }
+  
+  
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
       
 
@@ -86,6 +151,12 @@ class studentController extends Controller
                                                            'student_course' => Input::get('student_course'),
                                                            'student_school' => Input::get('student_school')
                                                           ));
+          
+          $data = array(
+            'success' => 1
+          );
+
+          json_encode($data);
 
           //        $crud['student_image'] = $imgsrc;
           //        DB::table('tbl_students')->insert($crud);
@@ -103,52 +174,39 @@ class studentController extends Controller
   
     }
 
+
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-      return view('crud.edit');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-          $crud = student::findOrFail($id);
-          return view('crud.edit')->withCrud($crud);
-    }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-         $crud = student::findOrFail($id);
-          $this->validate($request, [
-            'student_fname' => 'required',
-            'student_mname' => 'required',
-            'student_lname' => 'required',
-            'student_gender' => 'required',
-            'student_address' => 'required',
-            'student_course' => 'required',
-            'student_school' => 'required'
-          ]);
-          $input = $request->all();
-          $crud->fill($input)->save();
-          Session::flash('flash_message', 'Student Record Update');
-          return redirect()->back();
-    }
+  public function show($id)
+  {
+    return view('crud.edit');
+  }
+  public function edit($id)
+  {
+    $crud = student::findOrFail($id);
+    return view('crud.edit')->withCrud($crud);
+  }
+  public function update(Request $request, $id)
+  {
+    $crud = student::findOrFail($id);
+    $this->validate($request, [
+      'student_fname' => 'required',
+      'student_mname' => 'required',
+      'student_lname' => 'required',
+      'student_gender' => 'required',
+      'student_address' => 'required',
+      'student_course' => 'required',
+      'student_school' => 'required'
+    ]);
+    $input = $request->all();
+    $crud->fill($input)->save();
+    Session::flash('flash_message', 'Student Record Update');
+    return redirect()->back();
+  }
     /**
      * Remove the specified resource from storage.
      *
@@ -162,6 +220,5 @@ class studentController extends Controller
           Session::flash('flash_messagedel', 'Student Delete!');
           return redirect()->route('crud.index');
     }
-    public function upload() {
-    }
+
 }

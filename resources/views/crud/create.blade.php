@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('content')
-{!! Form::open(array('route' => 'crud.store', 'method' => 'POST', 'files' => true, 'class' => 'form-horizontal', 'role' => 'form' )); !!}
+{!! Form::open(array( 'route' => 'crud.store', 'method' => 'POST', 'files' => true, 'class' => 'form-horizontal frmRegistration', 'role' => 'form') ); !!}
 
 
 

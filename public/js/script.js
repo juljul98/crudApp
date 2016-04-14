@@ -1,18 +1,23 @@
 $(document).ready(function() {
-  
-//  var getHash = window.location.hash.replace('#','');
-//  var getLink  = window.location.hash.replace('/','').split('#');
-//  $('a[href^="/'+getLink[getLink.length - 1]+'#'+getHash+'"]').parent('li').addClass('active').siblings().removeClass('active');
-//  window.location.hash = '';
-  $('#table01').DataTable();
+
   $.ajaxSetup({
     headers: {
-      'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
   
-  $('.navMobileClick a').click(function(e){
-    $('.navBar').slideToggle();
-    e.preventDefault();
+  $('.searchinput').keyup(function(){
+    var searchinput = $(this).val();
+    $.ajax({
+      type: 'Get',
+      url:  '/crud/searchdata',
+      data: {'searchinput': searchinput },
+      success: function(data) {
+        var newResult = $.parseJSON(data)
+        console.log(newResult)
+      }
+    });
   });
+  
+  
 });

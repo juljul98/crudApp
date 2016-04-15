@@ -27,24 +27,36 @@ class studentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-  public function index(Request $request)
+  public function index()
     {
       // create var crud to
+    $crud = student::orderBy('student_fname', 'ASC')->get();
+    return view('crud.index', compact('crud'));
+    
+    
 
 
-    $crud = student::orderBy('student_fname', 'ASC');
-    $crud=$crud->get();
-    return View::make('crud.index', compact('crud'));
-
+ 
+ 
 
     }
-  public function searchdata() {
-    
+  
+  public function searchdata() 
+  {
+
     $crud = student::orderBy('student_fname', 'ASC');
+
     $student_fname = Input::get('searchinput');
     if (!empty($student_fname)) {
-      $crud->where('student_fname', 'LIKE', '%'.$student_fname.'%' );
-      $crud=$crud->get();
+      $crud->where('student_fname', 'LIKE', '%'.$student_fname.'%');
+      $crud = $crud->get();
+      $data = array(
+        'result' => $crud,
+        'success' => 1
+      );
+      echo json_encode($data);
+    } else {
+      $crud = $crud->get();
       $data = array(
         'result' => $crud,
         'success' => 1
@@ -52,6 +64,7 @@ class studentController extends Controller
       echo json_encode($data);
     }
   }
+
     /**
      * Show the form for creating a new resource.
      *

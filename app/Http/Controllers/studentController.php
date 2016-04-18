@@ -27,42 +27,67 @@ class studentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-  public function index()
+    protected $posts_per_page = 2;
+  public function index(Request $request)
     {
-      // create var crud to
-    $crud = student::orderBy('student_fname', 'ASC')->get();
-    return view('crud.index', compact('crud'));
-    
-    
-
-
- 
- 
+    $crud = student::paginate($this->posts_per_page);
+      if($request->ajax()){
+          return [
+            'crud' => view::make('crud.result')->with(compact('crud'))->render(),
+              'next_page' => $crud->nextPageUrl()
+          ];
+      }
+      return View::make('crud.index', compact('crud'));
+      
+//    $crud = db::table('tbl_students')->get();
+//    return view('crud.index', compact('crud'));
 
     }
+    
+    
+
+    
+    
   
   public function searchdata() 
   {
-
-    $crud = student::orderBy('student_fname', 'ASC');
-
+      
+    $crud = db::table('tbl_students')->paginate(2);
     $student_fname = Input::get('searchinput');
     if (!empty($student_fname)) {
+         $crud = db::table('tbl_students');
       $crud->where('student_fname', 'LIKE', '%'.$student_fname.'%');
-      $crud = $crud->get();
-      $data = array(
-        'result' => $crud,
-        'success' => 1
-      );
-      echo json_encode($data);
+      $crud = $crud->paginate(2);  
+
+      
+        return view('crud.result', compact('crud'));
     } else {
-      $crud = $crud->get();
-      $data = array(
-        'result' => $crud,
-        'success' => 1
-      );
-      echo json_encode($data);
+//        $crud = student::orderBy('student_fname', 'ASC')->get();
+       return view('crud.result', compact('crud'));  
     }
+    return view('crud.result', compact('crud'));
+
+// 2nd
+//    $crud = student::orderBy('student_fname', 'ASC');
+//
+////    $student_fname = Input::get('searchinput');
+////    if (!empty($student_fname)) {
+////      $crud->where('student_fname', 'LIKE', '%'.$student_fname.'%');
+////      $crud = $crud->get();
+//        
+////      $data = array(
+////        'result' => $crud,
+////        'success' => 1
+////      );
+////      echo json_encode($data);
+//    } else {
+//      $crud = $crud->get();
+//      $data = array(
+//        'result' => $crud,
+//        'success' => 1
+//      );
+//      echo json_encode($data);
+//    }
   }
 
     /**
@@ -92,9 +117,6 @@ class studentController extends Controller
         });
       })->download('xls');
     }
-  
-  
-  
   public function importexcel() {
     $rules = array(
       'file' => 'required'

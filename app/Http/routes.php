@@ -30,5 +30,6 @@ Route::group(['middleware' => ['web']], function () {
 //  Route::any('/crud', function(){
 //    return view('crud.index');
 //  });
+
   Route::resource('crud', 'studentController');
 });

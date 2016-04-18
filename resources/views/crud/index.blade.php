@@ -46,7 +46,7 @@
             @foreach($crud as $value)
             @if($count++) @endif
             <tr>
-        <td><img src="{{ $value->student_image }}" class="img-responsive" alt=""></td>
+        <td><img src="{{ $value->student_image }}" class="imgG" alt=""></td>
               <td>{{ $value->student_fname }}</td>
               <td>{{ $value->student_mname }}</td>
               <td>{{ $value->student_lname }}</td>

@@ -31,12 +31,12 @@ class studentController extends Controller
   public function index(Request $request)
     {
     $crud = student::paginate($this->posts_per_page);
-      if($request->ajax()){
-          return [
-            'crud' => view::make('crud.result')->with(compact('crud'))->render(),
-              'next_page' => $crud->nextPageUrl()
-          ];
-      }
+//      if($request->ajax()){
+//          return [
+//            'crud' => view::make('crud.result')->with(compact('crud'))->render(),
+//              'next_page' => $crud->nextPageUrl()
+//          ];
+//      }
       return View::make('crud.index', compact('crud'));
       
 //    $crud = db::table('tbl_students')->get();
@@ -70,16 +70,16 @@ class studentController extends Controller
 // 2nd
 //    $crud = student::orderBy('student_fname', 'ASC');
 //
-////    $student_fname = Input::get('searchinput');
-////    if (!empty($student_fname)) {
-////      $crud->where('student_fname', 'LIKE', '%'.$student_fname.'%');
-////      $crud = $crud->get();
+//    $student_fname = Input::get('searchinput');
+//    if (!empty($student_fname)) {
+//      $crud->where('student_fname', 'LIKE', '%'.$student_fname.'%');
+//      $crud = $crud->get();
 //        
-////      $data = array(
-////        'result' => $crud,
-////        'success' => 1
-////      );
-////      echo json_encode($data);
+//      $data = array(
+//        'result' => $crud,
+//        'success' => 1
+//      );
+//      echo json_encode($data);
 //    } else {
 //      $crud = $crud->get();
 //      $data = array(

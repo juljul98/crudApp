@@ -37,15 +37,20 @@ $(document).ready(function() {
 //  });
 //}
 //  loadrecord();
-     $('body').on('click', '.pagination a', function(e){
-           e.preventDefault();
-            var url = $(this).attr('href');
-            
-            $.get(url, function(data){
-                $('.posts').html(data);
-            });
-        });
 
+  
+  $('body').on('click', '.pagination a', function(e){
+    e.preventDefault();
+    var url = $(this).attr('href');
+    $(this).parent().addClass('active').siblings().removeClass('active');
+    $.get(url, function(data){
+      $('.table').html(data);
+      
+    });
+  });
+  
+  
+  
   $('.searchinput').keyup(function(){
     any();
   });
@@ -57,10 +62,10 @@ $(document).ready(function() {
             type: 'post',
             url:  '/crud/searchdata',
             data: {'searchinput': searchinput },
-            success: function(data) {  
+            success: function(data) {
             
-               $('.records').html(data);
-                $('.alert').text('found result '+ $('.records tr').length);
+               $('.table').html(data);
+              $('.alert').text('Result Found '+ $('.records tr').length);
 //                var newData = $.parseJSON(data);
 //                  if(newData.success == 1) {
 //                  var data = newData.result;

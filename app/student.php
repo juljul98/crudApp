@@ -31,11 +31,11 @@ class student extends Model
     'student_course',
     'student_school'
   );
-  public function scopeSearch($query)
-  {
-  $student_fname = Input::get('student_fname');
-    return $query->where('student_fname', 'LIKE', '%'.$student_fname.'%' )->orderBy('student_fname', 'ASC');
-  }
+//  public function scopeSearch($query)
+//  {
+//  $student_fname = Input::get('student_fname');
+//    return $query->where('student_fname', 'LIKE', '%'.$student_fname.'%' )->orderBy('student_fname', 'ASC');
+//  }
 //  public function scopeInsertData()
 //  {
 //    $file = array('student_image' => Input::file('student_image'));

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Search;
@@ -15,6 +15,8 @@ use App\Paginate;
 use Redirect;
 use DB;
 use Excel;
+use Response;
+use Request;
 
 
 
@@ -27,17 +29,15 @@ class studentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    protected $posts_per_page = 2;
+    protected $posts_per_page =2;
   public function index(Request $request)
     {
     $crud = student::paginate($this->posts_per_page);
-//      if($request->ajax()){
-//          return [
-//            'crud' => view::make('crud.result')->with(compact('crud'))->render(),
-//              'next_page' => $crud->nextPageUrl()
-//          ];
-//      }
-      return View::make('crud.index', compact('crud'));
+      if(Request::ajax()){
+        return Response::json(View::make('crud.result', array('crud' => $crud))->render());
+      }
+    return View::make('crud.index', array('crud' => $crud));
+//      return View::make('crud.index', compact('crud'));
       
 //    $crud = db::table('tbl_students')->get();
 //    return view('crud.index', compact('crud'));
@@ -52,18 +52,19 @@ class studentController extends Controller
   public function searchdata() 
   {
       
-    $crud = db::table('tbl_students')->paginate(2);
+    $crud = db::table('tbl_students')->paginate($this->posts_per_page);
     $student_fname = Input::get('searchinput');
     if (!empty($student_fname)) {
          $crud = db::table('tbl_students');
       $crud->where('student_fname', 'LIKE', '%'.$student_fname.'%');
-      $crud = $crud->paginate(2);  
-
+      $crud = $crud->paginate($this->posts_per_page);
       
-        return view('crud.result', compact('crud'));
+      $crud->setPath('http://localhost:8000/crud');
+      return view('crud.result', compact('crud'));
     } else {
 //        $crud = student::orderBy('student_fname', 'ASC')->get();
-       return view('crud.result', compact('crud'));  
+      $crud->setPath('http://localhost:8000/crud');
+       return view('crud.result', compact('crud'));
     }
     return view('crud.result', compact('crud'));
 
